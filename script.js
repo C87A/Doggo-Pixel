@@ -12,28 +12,48 @@ const colorPalette = [
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// โหลดภาพหมาและมาสก์
-const dogImage = new Image();
+// โหลดภาพขนาด 32px และ mask ขนาด 32px
+const originalImage = new Image();
 const maskImage = new Image();
-let imagesLoaded = 0;
+let imagesLoaded = false;
 
-// ระบุพาธของภาพ
-dogImage.src = 'dog.png'; // ใส่พาธไฟล์ของภาพหมา
-maskImage.src = 'dog-mask.png'; // ใส่พาธไฟล์ของมาสก์
+// ระบุพาธของภาพ 32x32 และ mask 32x32 ที่คุณทำไว้
+originalImage.src = 'dog32.png'; // ใส่พาธไฟล์ของภาพหมา 32px
+maskImage.src = 'mask32.png'; // ใส่พาธไฟล์ของ mask 32px
 
-// เมื่อทั้งสองภาพโหลดเสร็จแล้ว
-dogImage.onload = maskImage.onload = () => {
-    imagesLoaded++;
-    if (imagesLoaded === 2) {
-        // เมื่อภาพทั้งสองโหลดเสร็จแล้ว วาดภาพหมาลงบน Canvas
-        ctx.drawImage(dogImage, 0, 0, canvas.width, canvas.height);
-    }
+// เมื่อภาพทั้งสองโหลดเสร็จ
+let maskData;
+originalImage.onload = () => {
+    maskImage.onload = () => {
+        imagesLoaded = true;
+        maskData = getMaskData(maskImage);
+        drawScaledImage(); // วาดภาพเมื่อโหลดเสร็จ
+    };
 };
+
+// ฟังก์ชั่นเพื่อดึงข้อมูลจาก mask
+function getMaskData(mask) {
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = 32;
+    tempCanvas.height = 32;
+    tempCtx.drawImage(mask, 0, 0, 32, 32);
+    return tempCtx.getImageData(0, 0, 32, 32);
+}
+
+// วาดภาพขนาดใหญ่บนแคนวาส
+function drawScaledImage() {
+    if (!imagesLoaded) return;
+
+    // วาดภาพขนาด 32x32 และอัพสเกลเป็น 500x500
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // เคลียร์แคนวาส
+    ctx.drawImage(originalImage, 0, 0, 32, 32, 0, 0, canvas.width, canvas.height);
+}
 
 // ฟังก์ชั่นสุ่มสี
 function randomizeColors() {
-    if (imagesLoaded < 2) {
-        alert('Images are still loading. Please wait.');
+    if (!imagesLoaded) {
+        alert('Image is still loading. Please wait.');
         return;
     }
 
@@ -42,36 +62,40 @@ function randomizeColors() {
     const rows = Math.floor(canvas.height / blockSize); // แบ่งตามแนวตั้ง
     const cols = Math.floor(canvas.width / blockSize); // แบ่งตามแนวนอน
 
-    // ดึงข้อมูลภาพจากแคนวาสหลัก
-    const dogData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // ดึงข้อมูลภาพจากแคนวาส
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // ลูปในแต่ละบล็อก
+    // ลูปในแต่ละบล็อก 32x32
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-            // คำนวณตำแหน่งเริ่มต้นของแต่ละบล็อก
             const startX = col * blockSize;
             const startY = row * blockSize;
 
-            // วาดบล็อกขนาด 32px x 32px
-            for (let y = 0; y < blockSize; y++) {
-                for (let x = 0; x < blockSize; x++) {
-                    const index = ((startY + y) * canvas.width + (startX + x)) * 4;
+            // ตรวจสอบว่าในพื้นที่นี้มีสีที่สุ่มได้ตาม mask หรือไม่
+            const maskIndex = ((startY / blockSize) * 32 + (startX / blockSize)) * 4;
 
-                    // สุ่มสีสำหรับบล็อกนี้
-                    const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                    const [r, g, b] = hexToRgb(randomColor);
+            // ถ้า mask มีสีขาว (ให้สุ่มสี)
+            if (maskData.data[maskIndex + 3] === 0) {
+                const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                const [r, g, b] = hexToRgb(randomColor);
 
-                    // เปลี่ยนสีของพิกเซลในบล็อก
-                    dogData.data[index] = r;
-                    dogData.data[index + 1] = g;
-                    dogData.data[index + 2] = b;
+                // เปลี่ยนสีของพิกเซลในบล็อก
+                for (let y = 0; y < blockSize; y++) {
+                    for (let x = 0; x < blockSize; x++) {
+                        const index = ((startY + y) * canvas.width + (startX + x)) * 4;
+
+                        imageData.data[index] = r;
+                        imageData.data[index + 1] = g;
+                        imageData.data[index + 2] = b;
+                        imageData.data[index + 3] = 255; // ตั้งค่า alpha เป็น 255 (ไม่โปร่งใส)
+                    }
                 }
             }
         }
     }
 
-    // อัปเดตแคนวาสหลักหลังสุ่มสี
-    ctx.putImageData(dogData, 0, 0);
+    // อัปเดตแคนวาสหลังจากสุ่มสี
+    ctx.putImageData(imageData, 0, 0);
 }
 
 // ฟังก์ชั่นแปลงสี Hex เป็น RGB
