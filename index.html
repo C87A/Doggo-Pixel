@@ -3,13 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Randomize Dog Colors</title>
+    <title>Random Pixel Dog</title>
 </head>
 <body>
-    <canvas id="dogCanvas" width="500" height="500" style="border:1px solid black;"></canvas>
-    <br>
-    <button id="randomizeButton">Randomize Colors</button>
+    <canvas id="dogCanvas" width="32" height="32"></canvas>
+    <button onclick="generateRandomColor()">สุ่มสี</button>
 
-    <script src="script.js" defer></script>
+    <script>
+        const canvas = document.getElementById("dogCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let dogImage = new Image();
+        let maskImage = new Image();
+
+        dogImage.src = "dog32.png";  // รูปหมาต้นฉบับ
+        maskImage.src = "mask32.png";  // ไฟล์ mask
+	image.crossOrigin = "Anonymous";
+
+        dogImage.onload = () => {
+            ctx.drawImage(dogImage, 0, 0, 32, 32);
+        };
+
+        maskImage.onload = () => {
+            // โหลดไฟล์ mask เพื่อใช้ในการสุ่มสี
+        };
+
+        function generateRandomColor() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(dogImage, 0, 0, 32, 32);
+
+            // ใช้ mask เพื่อสุ่มสีส่วนที่กำหนด
+            let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                if (maskImageData[i] !== 0) {  // เปลี่ยนสีตามเงื่อนไขที่กำหนดใน mask
+                    let randomColor = getRandomColor();
+                    data[i] = randomColor.r;
+                    data[i + 1] = randomColor.g;
+                    data[i + 2] = randomColor.b;
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function getRandomColor() {
+            // ชุดสีหลัก 16 สีที่ไม่รวมสีดำและแดง
+            const colors = [
+                { r: 255, g: 0, b: 255 },   // Magenta
+                { r: 255, g: 255, b: 0 },   // Yellow
+                { r: 0, g: 255, b: 0 },     // Green
+                { r: 0, g: 255, b: 255 },   // Cyan
+                { r: 0, g: 0, b: 255 },     // Blue
+                { r: 255, g: 165, b: 0 },   // Orange
+                { r: 255, g: 105, b: 180 }, // Hot Pink
+                { r: 138, g: 43, b: 226 },  // Blue Violet
+                { r: 255, g: 192, b: 203 }, // Pink
+                { r: 255, g: 215, b: 0 },   // Gold
+                { r: 50, g: 205, b: 50 },   // Lime Green
+                { r: 255, g: 105, b: 180 }, // Deep Pink
+                { r: 255, g: 69, b: 0 },    // Orange Red
+                { r: 218, g: 165, b: 32 },  // Goldenrod
+                { r: 128, g: 0, b: 128 },   // Purple
+                { r: 255, g: 255, b: 255 }, // White
+            ];
+
+            // สุ่มเลือกสีจากชุด
+            const randomIndex = Math.floor(Math.random() * colors.length);
+            return colors[randomIndex];
+        }
+    </script>
 </body>
 </html>
