@@ -1,4 +1,25 @@
-/* สำหรับภาพพื้นฐาน */
+
+#title-container {
+  position: fixed; 
+  top: 0; 
+  left: 50%; 
+  transform: translateX(-50%); /* ปรับตำแหน่งให้อยู่กลางจริงๆ */
+  font-size: 48px; /* ขนาดตัวอักษร */
+  font-weight: bold; /* ทำให้ตัวอักษรหนา */
+  font-style: oblique;
+  z-index: 1000; /* ให้มั่นใจว่าตัวอักษรจะอยู่บนสุด */
+  padding: 10px; /* เพิ่มระยะห่างจากขอบ */
+  background-color: rgba(0, 0, 0, 0); 
+  color: white; 
+  font-family: 'Press Start 2P', cursive;
+}
+
+#pupffle-pixel {
+  font-weight: bold;
+  display: inline-block;
+  transition: color 0s ease; 
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -10,6 +31,7 @@ body {
   background-color: #f0f0f0;
   transition: background-color 0.3s ease;
 }
+
 
 /* จัดตำแหน่ง canvas ให้อยู่ตรงกลาง */
 #pixelCanvas {
@@ -126,24 +148,3 @@ a:hover {
   margin-bottom: 0;
 }
 
-
-#title-container {
-  position: fixed; /* ทำให้ตำแหน่งไม่เปลี่ยนแปลงเมื่อเลื่อนหน้าจอ */
-  top: 0; /* ให้เริ่มจากขอบบน */
-  left: 50%; /* ให้อยู่กลางแนวนอน */
-  transform: translateX(-50%); /* ปรับตำแหน่งให้อยู่กลางจริงๆ */
-  font-size: 48px; /* ขนาดตัวอักษร */
-  font-weight: bold; /* ทำให้ตัวอักษรหนา */
-  font-style: oblique;
-  z-index: 1000; /* ให้มั่นใจว่าตัวอักษรจะอยู่บนสุด */
-  padding: 10px; /* เพิ่มระยะห่างจากขอบ */
-  background-color: rgba(0, 0, 0, 0); /* เพิ่มพื้นหลังโปร่งใสเพื่อให้ข้อความเด่นขึ้น */
-  color: white; /* สีตัวอักษร */
-  font-family: 'Press Start 2P', cursive;
-}
-
-#pupffle-pixel {
-  font-weight: bold;
-  display: inline-block;
-  transition: color 0s ease; /* Transition effect for smooth color change */
-}
