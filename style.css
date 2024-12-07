@@ -59,16 +59,17 @@ body {
     background-color: #444;
   }
 }
-#roadmap {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 20px;
-  right: 20px;
+
+a {
+  color: orange;
+  text-decoration: none; /* Removes underline */
 }
+
+/* Change the link color on hover */
+a:hover {
+  color: darkorange; /* Darker shade on hover */
+}
+
 
 #about {
   background-color: #333;
@@ -77,7 +78,6 @@ body {
   width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 20px;
   left: 20px;
   color: #f1f1f1;
 }
@@ -98,32 +98,52 @@ body {
   margin-bottom: 0;
 }
 
-#roadmap h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #4CAF50;
-}
 
-.step {
-  margin-bottom: 15px;
-}
-
-.step span {
-  font-size: 18px;
+#How {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  right: 20px;
   color: #f1f1f1;
 }
 
-.completed {
+#How h2 {
   color: #4CAF50;
-  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.upcoming {
-  color: #FF9800;
+#How p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 15px;
 }
 
-.step:last-child {
+#about p:last-child {
   margin-bottom: 0;
 }
 
+
+#title-container {
+  position: fixed; /* ทำให้ตำแหน่งไม่เปลี่ยนแปลงเมื่อเลื่อนหน้าจอ */
+  top: 0; /* ให้เริ่มจากขอบบน */
+  left: 50%; /* ให้อยู่กลางแนวนอน */
+  transform: translateX(-50%); /* ปรับตำแหน่งให้อยู่กลางจริงๆ */
+  font-size: 48px; /* ขนาดตัวอักษร */
+  font-weight: bold; /* ทำให้ตัวอักษรหนา */
+  font-style: oblique;
+  z-index: 1000; /* ให้มั่นใจว่าตัวอักษรจะอยู่บนสุด */
+  padding: 10px; /* เพิ่มระยะห่างจากขอบ */
+  background-color: rgba(0, 0, 0, 0); /* เพิ่มพื้นหลังโปร่งใสเพื่อให้ข้อความเด่นขึ้น */
+  color: white; /* สีตัวอักษร */
+  font-family: 'Press Start 2P', cursive;
+}
+
+#pupffle-pixel {
+  font-weight: bold;
+  display: inline-block;
+  transition: color 0s ease; /* Transition effect for smooth color change */
+}
