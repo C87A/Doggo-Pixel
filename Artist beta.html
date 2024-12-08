@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUPFLE PIXEL</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #title-container {
+  font-size: 2.5em;
+  margin: 0.5em 0;
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #ff6600;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  z-index: 1000;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  font-family: "Press Start 2P", cursive;
+}
+
+#title-container p{
+  font-size: 20px;
+  margin: 0.5em 0;
+  color: #ae00ff;
+  text-shadow: 2px 2px 0 #0004ff;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: normal;
+  z-index: 1000;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  font-family: "Press Start 2P", cursive;
+}
+
+      body {
+        background-color: #222222;
+        color: white;
+        font-family: "Press Start 2P", cursive; /* ใช้ฟอนต์ที่มีลักษณะเหมือนพิกเซล */
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin: 0.5em 0;
+        color: #ffcc00;
+        text-shadow: 2px 2px 0 #ff6600;
+      }
+      .canvas-container {
+        position: relative;
+        display: inline-block;
+        width: 320px;
+        height: 320px;
+        border: 1px solid #ffd700;
+        background-color: #333333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        box-sizing: border-box;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        image-rendering: pixelated;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box; /* เพื่อไม่ให้กรอบแทรกเข้าไปในขนาดแคนวาส */
+      }
+
+      /* ปรับการจัดเรียงปุ่มในแนวนอน */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button {
+        background-color: #ff6600;
+        color: white;
+        border: 2px solid #ff3300;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1.1em;
+        cursor: pointer;
+        font-family: "Press Start 2P", cursive;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s;
+      }
+
+      button:disabled {
+        background-color: #444444;
+        border-color: #666666;
+        cursor: not-allowed;
+      }
+
+      button:hover:not(:disabled) {
+        background-color: #ff9933;
+        border-color: #ff6600;
+      }
+
+      button:active {
+        background-color: #ff4d00;
+        border-color: #ff3300;
+      }
+
+      .status {
+        margin: 20px 0;
+        font-size: 1.2em;
+        font-family: "Press Start 2P", cursive;
+        color: #ffd700;
+        text-shadow: 1px 1px 2px orange (0, 0, 0, 0.7);
+      }
+
+      #status1 {
+        color: #00ff00;
+      }
+
+      #status2 {
+        color: #ff0000;
+      }
+
+      #downloadBtn {
+        background-color: #32cd32;
+        border-color: #28a745;
+      }
+
+      #downloadBtn:hover {
+        background-color: #228b22;
+        border-color: #003200;
+      }
+
+      #downloadBtn:disabled {
+        background-color: #444444;
+        border-color: #666666;
+      }
+
+      h1,
+      .status {
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+      }
+
+      #maskCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        box-sizing: border-box; /* เพิ่ม box-sizing เพื่อให้ไม่เกิดการขยายจากขอบ */
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        font-size: 1.2em;
+        margin: 10px;
+        background-color: #555555;
+        color: white;
+        border: 2px solid #ff6600;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="file"]:hover {
+        background-color: #444444;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="title-container">
+      <span id="pupffle-pixel">PUPFLE PIXEL</span>
+      <!-- เพิ่มลิงค์สำหรับฟอนต์ Pixel Art จาก Google Fonts -->
+      <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+      /><p>beta.1</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/png, image/jpeg" />
+    <div class="status">
+      <span id="status1">📁 Upload Image</span> →
+      <span id="status2">🖌️ Mask</span>
+    </div>
+    <div class="canvas-container">
+      <canvas id="mainCanvas" width="32" height="32"></canvas>
+      <canvas id="maskCanvas" width="32" height="32"></canvas>
+    </div>
+    <button id="maskDone" disabled>Mask</button>
+    <button id="pupfle" disabled>PUPFLE</button>
+    <button id="downloadBtn" disabled>Download</button>
+
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const mainCanvas = document.getElementById("mainCanvas");
+      const maskCanvas = document.getElementById("maskCanvas");
+      const maskDone = document.getElementById("maskDone");
+      const pupfle = document.getElementById("pupfle");
+      const status1 = document.getElementById("status1");
+      const status2 = document.getElementById("status2");
+      const mainCtx = mainCanvas.getContext("2d");
+      const maskCtx = maskCanvas.getContext("2d");
+
+      let maskData = new Uint8Array(32 * 32).fill(0);
+      let isDragging = false;
+      let currentAction = null;
+
+      fileInput.addEventListener("change", handleFileUpload);
+      maskCanvas.addEventListener("mousedown", handleMouseDown);
+      maskCanvas.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      maskDone.addEventListener("click", finalizeMask);
+      pupfle.addEventListener("click", togglePupfle);
+
+      let interval = null;
+      const colorSets = {
+        mint: ["#00FF9C", "#B6FFA1", "#FEFFA7", "#FFE700", "#A1EEBD"],
+        blush: ["#FFB6C1", "#FFC4CE", "#FFD3D7", "#FFE2E0", "#FFF0F0"],
+        sky: ["#A1DFFF", "#C0E9FF", "#D9F3FF", "#EDF9FF", "#F9FCFF"],
+        lilac: ["#D9B9FF", "#E3CFFF", "#EDDDFF", "#F7E8FF", "#FFF3FF"],
+        peach: ["#FFDAC1", "#FFDFCE", "#FFE5DB", "#FFEBE7", "#FFF1F3"],
+        sunset: ["#FFB677", "#FFCC94", "#FFDFB2", "#FFEBD1", "#FFF5E9"],
+        aqua: ["#78E8D5", "#A0F2E1", "#BFFBEF", "#DFFFFF", "#F1FFFE"],
+        lavender: ["#C9A0FF", "#D6B8FF", "#E3D1FF", "#F1E9FF", "#F8F5FF"],
+        forest: ["#6B8E23", "#7FA846", "#93C168", "#A7DA8A", "#BCF3AC"],
+        ocean: ["#0077B6", "#00A4D6", "#00C4E6", "#80E5F5", "#E0FFFF"],
+        coral: ["#FF7F50", "#FF956F", "#FFAB8F", "#FFC0AF", "#FFD5CF"],
+        lemon: ["#FFF700", "#FFF830", "#FFF960", "#FFF990", "#FFFAA0"],
+        bubblegum: ["#FF80C0", "#FF99D0", "#FFB3E0", "#FFCCF0", "#FFE5FF"],
+        cream: ["#FFFDD0", "#FFFEEE", "#FFF8E5", "#FFF1CC", "#FFEBB3"],
+        amber: ["#FFC107", "#FFCC33", "#FFD94D", "#FFE666", "#FFF280"],
+        ruby: ["#E0115F", "#F0246E", "#F9367F", "#FF488F", "#FF5B9F"],
+        sapphire: ["#0F52BA", "#3669C7", "#5D80D4", "#8397E0", "#AACCEE"],
+        gold: ["#FFD700", "#FFE033", "#FFEA66", "#FFF499", "#FFF8CC"],
+        slate: ["#708090", "#828B96", "#949FA3", "#A6B3B0", "#B8C7BD"],
+        charcoal: ["#36454F", "#4E5F68", "#667A82", "#7E959C", "#97B0B6"],
+        emerald: ["#50C878", "#66D68E", "#7CE3A4", "#92F1BA", "#A8FFD0"],
+        tangerine: ["#F28500", "#F49933", "#F6AD66", "#F8C199", "#FBD5CC"],
+        grape: ["#6F2DA8", "#8150B4", "#9373C0", "#A596CC", "#B7B9D8"],
+        rose: ["#FF007F", "#FF338F", "#FF669F", "#FF99AF", "#FFCCBF"],
+        ivory: ["#FFFFF0", "#FFFFE5", "#FFFFDA", "#FFFFCF", "#FFFFC4"],
+        teal: ["#008080", "#339999", "#66B3B3", "#99CCCC", "#CCE5E5"],
+        sand: ["#F4A460", "#F5B67C", "#F6C798", "#F7D8B4", "#F8E9D0"],
+        plum: ["#DDA0DD", "#E1B3E1", "#E5C5E5", "#E9D8E9", "#EDF0ED"],
+        glacier: ["#A7C7E7", "#B9D5EF", "#CBE3F7", "#DDEFFF", "#EFF9FF"],
+        sunshine: ["#FFCF40", "#FFD866", "#FFE18C", "#FFEAB2", "#FFF3D8"],
+        cinnamon: ["#D2691E", "#DB7C3E", "#E58F5E", "#EFA27E", "#F9B59E"],
+        denim: ["#1560BD", "#3675C8", "#5789D3", "#789DDE", "#99B1E9"],
+        jade: ["#00A86B", "#33B98A", "#66CBA9", "#99DDC8", "#CCEEE7"],
+        periwinkle: ["#CCCCFF", "#D3D3FF", "#DADAFE", "#E1E1FE", "#E8E8FF"],
+        marigold: ["#FFB200", "#FFBF33", "#FFCC66", "#FFD999", "#FFE6CC"],
+        cranberry: ["#B22222", "#C23C3C", "#D25656", "#E27070", "#F28A8A"],
+        moss: ["#8A9A5B", "#A1B471", "#B8CF87", "#D0E99D", "#E7FFA3"],
+        flamingo: ["#FF5733", "#FF694F", "#FF7B6B", "#FF8D87", "#FF9FA3"],
+        frost: ["#E0F7FA", "#E8FBFD", "#F0FFFF", "#F8FFFF", "#FFFFFF"],
+        mustard: ["#FFDB58", "#FFE080", "#FFE5A8", "#FFEAD0", "#FFF0F8"],
+        chartreuse: ["#7FFF00", "#9EFF33", "#BCFF66", "#DBFF99", "#F9FFCC"],
+        blushPink: ["#FFC0CB", "#FFCCCE", "#FFD8D1", "#FFE4D4", "#FFEFD7"],
+        pistachio: ["#93C572", "#A8D387", "#BDD19C", "#D2E0B1", "#E6F0C6"],
+        steel: ["#B0C4DE", "#BACDDD", "#C4D6E6", "#CEDFEF", "#D8E8F8"],
+        sepia: ["#704214", "#8A5B35", "#A47456", "#BE8D77", "#D8A698"],
+      };
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (!["image/png", "image/jpeg"].includes(file.type)) {
+          alert("Please upload a PNG or JPG image.");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            mainCtx.drawImage(img, 0, 0, 32, 32);
+            maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+            maskData.fill(0);
+            status1.textContent = "✔ Upload Image";
+            maskDone.disabled = false;
+            maskCanvas.style.pointerEvents = "auto";
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+      maskCanvas.style.pointerEvents = "none";
+
+      function handleMouseDown(event) {
+        isDragging = true;
+        const { x, y, index } = getMousePosition(event);
+        currentAction = maskData[index] === 0 ? "mask" : "unmask";
+        updateMask(x, y, index);
+      }
+
+      function handleMouseMove(event) {
+        if (!isDragging) return;
+        const { x, y, index } = getMousePosition(event);
+        updateMask(x, y, index);
+      }
+
+      function handleMouseUp() {
+        isDragging = false;
+        currentAction = null;
+      }
+
+      function updateMask(x, y, index) {
+        if (currentAction === "mask" && maskData[index] === 0) {
+          maskData[index] = 1;
+          maskCtx.fillStyle = "rgba(0, 0, 255, 0.5)";
+          maskCtx.fillRect(x, y, 1, 1);
+        } else if (currentAction === "unmask" && maskData[index] === 1) {
+          maskData[index] = 0;
+          maskCtx.clearRect(x, y, 1, 1);
+        }
+      }
+
+      function getMousePosition(event) {
+        const rect = maskCanvas.getBoundingClientRect();
+        const x = Math.floor(
+          (event.clientX - rect.left) / (rect.width / maskCanvas.width)
+        );
+        const y = Math.floor(
+          (event.clientY - rect.top) / (rect.height / maskCanvas.height)
+        );
+        return { x, y, index: y * 32 + x };
+      }
+
+      function finalizeMask() {
+        status2.textContent = "✔ Mask";
+        pupfle.disabled = false;
+        maskCanvas.style.pointerEvents = "none";
+      }
+
+      function togglePupfle() {
+        if (interval) {
+          clearInterval(interval);
+          interval = null;
+        } else {
+          interval = setInterval(() => {
+            // Select a random color set for each cycle
+            const colorKeys = Object.keys(colorSets);
+            const selectedColorSet =
+              colorSets[
+                colorKeys[Math.floor(Math.random() * colorKeys.length)]
+              ];
+
+            maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+            maskData.forEach((value, index) => {
+              if (value === 1) {
+                const x = index % 32;
+                const y = Math.floor(index / 32);
+                const randomColor =
+                  selectedColorSet[
+                    Math.floor(Math.random() * selectedColorSet.length)
+                  ];
+                maskCtx.fillStyle = randomColor;
+                maskCtx.fillRect(x, y, 1, 1);
+              }
+            });
+          }, 50);
+        }
+      }
+      // เพิ่มการจับคลิกดาวน์โหลด
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      downloadBtn.addEventListener("click", function () {
+        // สร้าง canvas ใหม่เพื่อรวม layer ทั้งสอง
+        const finalCanvas = document.createElement("canvas");
+        const finalCtx = finalCanvas.getContext("2d");
+
+        // ตั้งขนาด canvas ใหม่เป็น 320px x 320px
+        finalCanvas.width = 320;
+        finalCanvas.height = 320;
+        // ใช้ image-rendering: pixelated เพื่อให้การขยายภาพไม่ทำให้เบลอ
+        finalCtx.imageSmoothingEnabled = false; // ปิดการทำงานของ smoothing
+        finalCanvas.style.imageRendering = "pixelated"; // ให้ภาพแสดงผลเป็น pixel art
+
+        // เพิ่ม layer ต้นแบบ
+        finalCtx.drawImage(mainCanvas, 0, 0, 320, 320);
+
+        // เพิ่ม layer mask ที่สุ่มสี
+        maskData.forEach((value, index) => {
+          if (value === 1) {
+            const x = index % 32;
+            const y = Math.floor(index / 32);
+            const randomColor = maskCtx.getImageData(x, y, 1, 1).data; // ใช้สีที่สุ่มจาก maskCanvas
+            finalCtx.fillStyle = `rgb(${randomColor[0]}, ${randomColor[1]}, ${randomColor[2]})`; // ใช้ค่าคอมโพเนนต์ RGB จาก mask
+            finalCtx.fillRect(x * 10, y * 10, 10, 10); // ขยายขนาดเป็น 10px
+          }
+        });
+
+        // ดาวน์โหลดภาพ
+        const link = document.createElement("a");
+        link.href = finalCanvas.toDataURL("image/png");
+        link.download = "PUPFLE-art-image.png";
+        link.click();
+      });
+
+      // เปิดใช้งานปุ่มดาวน์โหลดเมื่อเสร็จขั้นตอนการ Mask
+      maskDone.addEventListener("click", function () {
+        downloadBtn.disabled = false;
+      });
+
+    </script>
+  </body>
+</html>

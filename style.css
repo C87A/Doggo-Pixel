@@ -1,150 +1,162 @@
-
-#title-container {
-  position: fixed; 
-  top: 0; 
-  left: 50%; 
-  transform: translateX(-50%); /* ปรับตำแหน่งให้อยู่กลางจริงๆ */
-  font-size: 48px; /* ขนาดตัวอักษร */
-  font-weight: bold; /* ทำให้ตัวอักษรหนา */
-  font-style: oblique;
-  z-index: 1000; /* ให้มั่นใจว่าตัวอักษรจะอยู่บนสุด */
-  padding: 10px; /* เพิ่มระยะห่างจากขอบ */
-  background-color: rgba(0, 0, 0, 0); 
-  color: white; 
-  font-family: 'Press Start 2P', cursive;
-}
-
-#pupffle-pixel {
-  font-weight: bold;
-  display: inline-block;
-  transition: color 0s ease; 
-}
-
+/* พื้นฐาน */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "ＭＳ Ｐゴシック";
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   height: 100vh;
   background-color: #f0f0f0;
   transition: background-color 0.3s ease;
 }
 
+a {
+  color: orange;
+}
 
-/* จัดตำแหน่ง canvas ให้อยู่ตรงกลาง */
+a:hover {
+  color: darkorange;
+}
+/* คำว่า PUPFLE PIXEL */
+#title-container {
+  font-size: 2.5em;
+  margin: 0.5em 0;
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #ff6600;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  z-index: 1000;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  font-family: "Press Start 2P", cursive;
+}
+
+/* ข้อความเพิ่มเติม */
+#news p {
+  font-size: 30px;
+  text-align: center;
+  color: #4caf50;
+  line-height: 1px;
+      font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+/* คอนเทนเนอร์หลัก */
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 20px;
+}
+
+#Container {
+  display: flex;
+  flex-direction: column; /* ทำให้เนื้อหาทั้งหมดจัดเรียงในแนวตั้ง */
+  justify-content: center; /* จัดตำแหน่งเนื้อหาตรงกลางแนวตั้ง */
+  align-items: center; /* จัดตำแหน่งเนื้อหาตรงกลางแนวนอน */
+  height: 100%; /* ให้ container ครอบคลุมทั้งพื้นที่ */
+  width: max-content; /* ทำให้คอนเทนเนอร์เต็มความกว้าง */
+  display: block; /* ใช้ block layout ให้แยกแสดงเป็นบรรทัด */
+  text-align: center; /* จัดตำแหน่งเนื้อหาภายใน container ให้อยู่กลาง */
+
+}
+
 #pixelCanvas {
   width: 320px;
   height: 320px;
-  border: 1px solid black;
+  border: 3px solid yellow;
   image-rendering: pixelated;
-  margin-bottom: 60px;  /* ให้มีระยะห่างจากปุ่ม */
+  display: block; 
 }
 
-/* ปรับปุ่มให้อยู่ตรงกลางด้านล่าง */
 #toggleButton {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 1px; /* เพิ่มระยะห่างจากแคนวา */
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
-  cursor: pointer;
-  border-radius: 5px;
+  cursor:pointer;
+  border-radius: 2px;
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
+  width: 326px
 }
 
-#toggleButton:hover {
-  background-color: #45a049;
+/* About และ How */
+#about,
+#How {
+  background-color: #333;
+  color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+  width: 45%;
+  margin-top: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Dark Mode */
+#about h2,
+#How h2 {
+  color: #4caf50;
+  text-align: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 16px;
+}
+
+#about p,
+#How p {
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 1px;
+}
+
+/* ธีมมืดแบบ Pixel Art */
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #121212;
-    color: white;
+    background-color: #000;
+    color: #fff;
+  }
+
+  #title-container {
+    color: #ffd700;
+  }
+
+  #news {
+    color: #9acd32;
   }
 
   #pixelCanvas {
-    border: 1px solid #333;
+    border: 3px solid #666;
   }
 
-  #toggleButton {
-    background-color: #333;
-    color: white;
+  #about,
+  #How {
+    background-color: #111;
+    color: #aaa;
   }
 
-  #toggleButton:hover {
-    background-color: #444;
+  #about h2,
+  #How h2 {
+    color: #90ee90;
   }
 }
 
-a {
-  color: orange;
-  text-decoration: none; /* Removes underline */
+/* สำหรับหน้าจอเล็ก */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #about,
+  #How,#news {
+    width: 90%;
+  }
 }
-
-/* Change the link color on hover */
-a:hover {
-  color: darkorange; /* Darker shade on hover */
-}
-
-
-#about {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  left: 20px;
-  color: #f1f1f1;
-}
-
-#about h2 {
-  color: #4CAF50;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-#about p {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-#about p:last-child {
-  margin-bottom: 0;
-}
-
-
-#How {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  right: 20px;
-  color: #f1f1f1;
-}
-
-#How h2 {
-  color: #4CAF50;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-#How p {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-#about p:last-child {
-  margin-bottom: 0;
-}
-

@@ -92,29 +92,3 @@ function hexToRgb(hex) {
   const b = bigint & 255;
   return [r, g, b];
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  // กำหนดสีที่สุ่มให้กับตัวอักษร
-  const colors = ['red', 'green', 'yellow', 'white','purple'];
-  
-  // ดึง element ที่มี id เป็น pupffle-pixel
-  const title = document.getElementById('pupffle-pixel');
-  
-  // ฟังก์ชันสำหรับการสุ่มสีให้กับแต่ละตัวอักษร
-  function changeTextColor() {
-      const text = title.textContent;
-      let coloredText = '';
-      
-      // ลูปผ่านตัวอักษรแต่ละตัวและสุ่มสี
-      for (let i = 0; i < text.length; i++) {
-          const randomColor = colors[Math.floor(Math.random() * colors.length)];
-          coloredText += `<span style="color: ${randomColor}">${text[i]}</span>`;
-      }
-      
-      // อัพเดตชื่อเว็บไซต์ด้วยการใส่สีที่สุ่มให้
-      title.innerHTML = coloredText;
-  }
-
-  // เปลี่ยนสีทุกๆ 200 มิลลิวินาที (คุณสามารถปรับเวลาได้)
-  setInterval(changeTextColor, 150);
-});
