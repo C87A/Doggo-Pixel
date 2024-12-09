@@ -1,69 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PUPFLE PIXEL</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="title-container">
-      <span id="pupffle-pixel">PUPFLE PIXEL</span>
-            <!-- เพิ่มลิงค์สำหรับฟอนต์ Pixel Art จาก Google Fonts -->
-      <link
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-        rel="stylesheet"
-      />
-    </div>
-    <div id="news">
-      <p>this page is a sample version of my project.</p>
-        <p>here 👉 <a href="Artist beta.html">Artist beta</a></p>
-    </div>
-    <div class="container">
-      <canvas id="pixelCanvas" width="32" height="32"></canvas><br>
-      <button id="toggleButton">Pause</button>
-    </div>
 
-    <div id="about">
-      <h2>🎯 About This Project</h2>
-      <p>
-        This project started with a random color idea 🧠: making a website to
-        randomize colors for pixel art 🎨✨. At first, it was just for fun, but
-        then I thought, "Hey, why not turn it into a platform for creating bulk NFTs collecttion
-        🖼️ or even a playground for artist hobbies?
-      </p>
-      <p>
-        I’m still learning and improving it bit by bit 🛠️. Hopefully, one day
-        it’ll turn into something really awesome! Thanks for stopping by and
-        checking out my little project—cheer me on, okay? 💪😄
-      </p>
-      <p>
-        P.S. This is the landing page I linked to the
-        <a
-          href="https://pump.fun/coin/GYETe3L5kQDUDyT1HwECBNinscYy31kKqegh4Zsrpump"
-          target="_blank"
-          >token</a
-        >
-        when I created it in 2024.
-      </p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUPFLE PIXEL</title>
+  <style>
+    /* พื้นฐาน */
+    body {
+      font-family: "ＭＳ Ｐゴシック";
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      transition: background-color 0.3s ease;
+    }
 
-    <div id="How">
-      <h2>🎯 How It Works</h2>
-      <p style="color: yellow;">
-        🎨 <strong>The pixel color randomization by an algorithm, not pre-made GIFs.</strong>
-      </p>🚀 Each time, a new color palette is randomly selected and applied to
-        the image, creating a unique look 🌈.
-      </p>
-      <p>
-        With multiple palettes containing 5 harmonious colors, the chance of
-        repeating the exact same pattern is approximately 1 in 10×5^1024 (if
-        there are 10 palettes)—an extraordinarily large number, far beyond easy
-        comprehension 😱. It’s so vast that it’s practically impossible to find
-        the same combination in our lifetime! 🤯
-      </p>
-    </div>
+    a {
+      color: orange;
+    }
 
-    <script src="script.js"></script>
-  </body>
+    a:hover {
+      color: darkorange;
+    }
+
+    /* คำว่า PUPFLE PIXEL */
+    #title-container {
+      font-size: 2.5em;
+      margin: 0.5em 0;
+      color: #ffcc00;
+      text-shadow: 2px 2px 0 #ff6600;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      z-index: 1000;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0);
+      font-family: "Press Start 2P", cursive;
+    }
+
+    /* ข้อความเพิ่มเติม */
+    #news p {
+      font-size: 30px;
+      text-align: center;
+      color: #4caf50;
+      line-height: 1px;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 1px;
+    }
+
+    /* คอนเทนเนอร์หลัก */
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 20px;
+    }
+
+    #Container {
+      display: flex;
+      flex-direction: column;
+      /* ทำให้เนื้อหาทั้งหมดจัดเรียงในแนวตั้ง */
+      justify-content: center;
+      /* จัดตำแหน่งเนื้อหาตรงกลางแนวตั้ง */
+      align-items: center;
+      /* จัดตำแหน่งเนื้อหาตรงกลางแนวนอน */
+      height: 100%;
+      /* ให้ container ครอบคลุมทั้งพื้นที่ */
+      width: max-content;
+      /* ทำให้คอนเทนเนอร์เต็มความกว้าง */
+      display: block;
+      /* ใช้ block layout ให้แยกแสดงเป็นบรรทัด */
+      text-align: center;
+      /* จัดตำแหน่งเนื้อหาภายใน container ให้อยู่กลาง */
+
+    }
+
+    #pixelCanvas {
+      width: 320px;
+      height: 320px;
+      border: 3px solid yellow;
+      image-rendering: pixelated;
+      display: block;
+    }
+
+    #toggleButton {
+      margin-top: 1px;
+      /* เพิ่มระยะห่างจากแคนวา */
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 2px;
+      font-family: "Press Start 2P", cursive;
+      text-transform: uppercase;
+      width: 326px
+    }
+
+    /* About และ How */
+    #about,
+    #How {
+      background-color: #333;
+      color: #f1f1f1;
+      padding: 20px;
+      border-radius: 10px;
+      width: 45%;
+      margin-top: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    #about h2,
+    #How h2 {
+      color: #4caf50;
+      text-align: center;
+      font-family: "Press Start 2P", cursive;
+      font-size: 16px;
+    }
+
+    #about p,
+    #How p {
+      font-size: 14px;
+      line-height: 1.6;
+      letter-spacing: 1px;
+    }
+
+    /* ธีมมืดแบบ Pixel Art */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #000;
+        color: #fff;
+      }
+
+      #title-container {
+        color: #ffd700;
+      }
+
+      #news {
+        color: #9acd32;
+      }
+
+      #pixelCanvas {
+        border: 3px solid #666;
+      }
+
+      #about,
+      #How {
+        background-color: #111;
+        color: #aaa;
+      }
+
+      #about h2,
+      #How h2 {
+        color: #90ee90;
+      }
+    }
+
+    /* สำหรับหน้าจอเล็ก */
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #about,
+      #How,
+      #news {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="title-container">
+    <span id="pupffle-pixel">PUPFLE PIXEL</span>
+    <!-- เพิ่มลิงค์สำหรับฟอนต์ Pixel Art จาก Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  </div>
+  <div id="news">
+    <p>this page is a sample version of my project.</p>
+    <p>here 👉 <a href="Artist beta.html">Artist beta</a></p>
+  </div>
+  <div class="container">
+    <canvas id="pixelCanvas" width="32" height="32"></canvas><br>
+    <button id="toggleButton">Pause</button>
+  </div>
+
+  <div id="about">
+    <h2>🎯 About This Project</h2>
+    <p>
+      This project started with a random color idea 🧠: making a website to
+      randomize colors for pixel art 🎨✨. At first, it was just for fun, but
+      then I thought, "Hey, why not turn it into a platform for creating bulk NFTs collecttion
+      🖼️ or even a playground for artist hobbies?
+    </p>
+    <p>
+      I’m still learning and improving it bit by bit 🛠️. Hopefully, one day
+      it’ll turn into something really awesome! Thanks for stopping by and
+      checking out my little project—cheer me on, okay? 💪😄
+    </p>
+    <p>
+      P.S. This is the landing page I linked to the
+      <a href="https://pump.fun/coin/GYETe3L5kQDUDyT1HwECBNinscYy31kKqegh4Zsrpump" target="_blank">token</a>
+      when I created it in 2024.
+    </p>
+  </div>
+
+  <div id="How">
+    <h2>🎯 How It Works</h2>
+    <p style="color: yellow;">
+      🎨 <strong>The pixel color randomization by an algorithm, not pre-made GIFs.</strong>
+    </p>🚀 Each time, a new color palette is randomly selected and applied to
+    the image, creating a unique look 🌈.
+    </p>
+    <p>
+      With multiple palettes containing 5 harmonious colors, the chance of
+      repeating the exact same pattern is approximately 1 in 10×5^1024 (if
+      there are 10 palettes)—an extraordinarily large number, far beyond easy
+      comprehension 😱. It’s so vast that it’s practically impossible to find
+      the same combination in our lifetime! 🤯
+    </p>
+  </div>
+
+
+  <script>
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+    const toggleButton = document.getElementById('toggleButton');
+
+    const maskImage = new Image();
+    maskImage.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAADeSURBVFhH7ZSLCkMhCIY7e/93btnJ8KiV5sYY9EEE4eVXq3Q4/Du5LQ8Pn1fbd/Am5lT/iICUc9dgFVPtiF+62r5DiXMHui57GObj8JRYq54REgBERNTcoTtQEAXQ+SLKWfeLdgDY6ULPG+3AFK0bHCoArHGFgeRw01cisBXcyjOaHcHiDmAQnngZHCt0/AUPw9kdMFWGiS3zLgiV9IB2wRSNogko4kRCDjdwJ17gFoB8SshSwFf/AQs/FzACRsDHoJ0BHlvBGcFKwKjlGh7bzkiA9nxGT8pjezgwUnoDnC5H/zkoUjcAAAAASUVORK5CYII='; // ใส่ข้อมูล Base64 ที่ได้
+
+    const colorSets = {
+      red: ['#FF0000', '#FF4D4D', '#FF8080', '#FF9999', '#FFB3B3'],
+      yellow: ['#FFFF00', '#FFFF4D', '#FFFF80', '#FFFF99', '#FFFFB3'],
+      blue: ['#0000FF', '#4D4DFF', '#8080FF', '#9999FF', '#B3B3FF'],
+      orange: ['#FFA500', '#FFB84D', '#FFCC80', '#FFD699', '#FFE0B3'],
+      green: ['#008000', '#339933', '#66CC66', '#99E699', '#B3FFB3'],
+      purple: ['#800080', '#993399', '#B266B2', '#CC99CC', '#E6CCE6'],
+      cyan: ['#00FFFF', '#4DFFFF', '#80FFFF', '#99FFFF', '#B3FFFF'],
+      pink: ['#FFC0CB', '#FFCCE0', '#FFD6E6', '#FFE0EB', '#FFEAF0'],
+      brown: ['#8B4513', '#A0522D', '#CD853F', '#D2B48C', '#DEB887'],
+      gray: ['#808080', '#999999', '#B3B3B3', '#CCCCCC', '#E6E6E6'],
+      mint: ['#00FF9C', '#B6FFA1', '#FEFFA7', '#FFE700', '#A1EEBD'],
+    };
+
+    let currentSet = 'red';
+    let isRunning = true;
+    let loopInterval;
+
+    // โหลด mask
+    maskImage.onload = () => {
+      drawRandomColors(); // วาดครั้งแรก
+      startRandomizing(); // เริ่มการสุ่มสี
+    };
+
+    // ควบคุมปุ่ม Pause/Resume
+    toggleButton.addEventListener('click', () => {
+      if (isRunning) {
+        clearInterval(loopInterval);
+        toggleButton.textContent = 'Resume';
+      } else {
+        startRandomizing();
+        toggleButton.textContent = 'Pause';
+      }
+      isRunning = !isRunning;
+    });
+
+    // เริ่มต้นการสุ่ม
+    function startRandomizing() {
+      clearInterval(loopInterval);
+      loopInterval = setInterval(drawRandomColors, 50);
+    }
+
+    // ฟังก์ชันวาดภาพพร้อมสุ่มสี
+    function drawRandomColors() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(maskImage, 0, 0, canvas.width, canvas.height);
+
+      const colors = colorSets[currentSet];
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const isMasked = data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0; // พื้นที่สีดำใน mask
+        const isWhite = data[i] === 255 && data[i + 1] === 255 && data[i + 2] === 255; // พื้นที่สีขาวใน mask
+
+        // ถ้าเป็นสีดำใน mask ให้สุ่มสี
+        if (isMasked) {
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          const [r, g, b] = hexToRgb(randomColor);
+          data[i] = r;
+          data[i + 1] = g;
+          data[i + 2] = b;
+        }
+
+        // ถ้าเป็นสีขาวใน mask เปลี่ยนเป็นดำ
+        if (isWhite) {
+          data[i] = 0;
+          data[i + 1] = 0;
+          data[i + 2] = 0;
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      // สุ่มชุดสีใหม่สำหรับรอบต่อไป
+      const sets = Object.keys(colorSets);
+      currentSet = sets[Math.floor(Math.random() * sets.length)];
+    }
+
+    // ฟังก์ชันแปลง Hex เป็น RGB
+    function hexToRgb(hex) {
+      const bigint = parseInt(hex.replace('#', ''), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return [r, g, b];
+    }
+
+  </script>
+</body>
+
 </html>
